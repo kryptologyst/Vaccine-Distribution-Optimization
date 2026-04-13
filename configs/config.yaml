@@ -1,0 +1,98 @@
+# Data configuration
+data:
+  n_regions: 1000
+  population_mean: 100000
+  population_std: 20000
+  infection_rate_mean: 0.02
+  infection_rate_std: 0.01
+  elderly_ratio_mean: 0.15
+  elderly_ratio_std: 0.05
+  cold_chain_capacity_mean: 5000
+  cold_chain_capacity_std: 1000
+  include_geographic: true
+  seed: 42
+
+# Model configuration
+models:
+  baseline:
+    linear:
+      enabled: true
+    ridge:
+      enabled: true
+      alpha: 1.0
+    random_forest:
+      enabled: true
+      n_estimators: 100
+      random_state: 42
+  
+  gradient_boosting:
+    xgboost:
+      enabled: true
+      n_estimators: 200
+      max_depth: 6
+      learning_rate: 0.1
+      random_state: 42
+    lightgbm:
+      enabled: true
+      n_estimators: 200
+      max_depth: 6
+      learning_rate: 0.1
+      random_state: 42
+  
+  neural_network:
+    enabled: true
+    hidden_sizes: [64, 32]
+    dropout_rate: 0.2
+    learning_rate: 0.001
+    batch_size: 32
+    epochs: 100
+    device: "auto"  # auto, cuda, mps, cpu
+
+# Evaluation configuration
+evaluation:
+  test_size: 0.2
+  random_state: 42
+  metrics:
+    - rmse
+    - mae
+    - r2
+    - mape
+    - smape
+    - mase
+  spatial_metrics:
+    enabled: true
+    regional_analysis: true
+
+# Optimization configuration
+optimization:
+  total_vaccines: 500000
+  constraints:
+    max_per_region: null  # null = no limit
+    min_coverage: 0.0
+  priority_weights:
+    infection_rate: 0.5
+    elderly_ratio: 0.3
+    logistics_score: 0.2
+
+# Visualization configuration
+visualization:
+  style: "seaborn-v0_8"
+  figure_size: [12, 8]
+  dpi: 300
+  save_plots: true
+  interactive: true
+  
+  maps:
+    center_lat: null  # null = auto-calculate
+    center_lon: null  # null = auto-calculate
+    zoom_start: 6
+    marker_radius: 8
+    marker_opacity: 0.7
+
+# Paths
+paths:
+  data_dir: "data"
+  assets_dir: "assets"
+  results_dir: "assets/results"
+  visualizations_dir: "assets/visualizations"
+  models_dir: "models"
